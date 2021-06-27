@@ -33,5 +33,11 @@ namespace LogImporter
         /// Create the table if it does not alread exists.
         /// </summary>
         bool CreateTable { get; set; }
+
+        /// <summary>
+        /// Rename file
+        /// </summary>
+        string RenameFile { get; set; }
+
     }
 }

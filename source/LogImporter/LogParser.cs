@@ -35,14 +35,16 @@ namespace LogImporter
             this.transformations = transformations;
         }
 
-        public void ParseEntries(out long count)
+        public void ParseEntries(out long count, string renameExtension)
         {
             IEnumerable<FileInfo> files = this.fileService.GetFiles();
 
-            this.ParseEntries(files, null, out count);
+            this.ParseEntries(files, null, out count, renameExtension);
         }
 
-        public void ParseEntries(IEnumerable<string> importedFileNames, LogEntry lastEntry, out long count)
+
+
+        public void ParseEntries(IEnumerable<string> importedFileNames, LogEntry lastEntry, out long count, string renameExtension)
         {
             if (importedFileNames == null)
                 throw new ArgumentNullException("importedFileNames");
@@ -52,7 +54,7 @@ namespace LogImporter
 
             IEnumerable<FileInfo> files = this.fileService.GetFiles(importedFileNames.ToArray(), lastEntry);
 
-            this.ParseEntries(files, lastEntry, out count);
+            this.ParseEntries(files, lastEntry, out count, renameExtension);
         }
 
         /// <summary>
@@ -69,7 +71,7 @@ namespace LogImporter
                 entry.LogFilename != lastEntry.LogFilename || entry.LogRow > lastEntry.LogRow;
         }
 
-        private void ParseEntries(IEnumerable<FileInfo> files, LogEntry lastEntry, out long count)
+        private void ParseEntries(IEnumerable<FileInfo> files, LogEntry lastEntry, out long count, string renameExtension)
         {
             count = 0;
 
@@ -89,7 +91,13 @@ namespace LogImporter
                 {
                     // Write entries to the database.
                     this.db.Write(entries, out subCount);
-                    file.MoveTo(file.FullName + ".bak");
+
+                    // rename extention
+                    if (!string.IsNullOrEmpty(renameExtension))
+                    {
+                        file.MoveTo(Path.ChangeExtension(file.FullName, renameExtension));
+                    }
+
                     subCounts.Add(file.FullName, subCount);
                 }
                 catch

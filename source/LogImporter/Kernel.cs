@@ -45,7 +45,7 @@ namespace LogImporter
                 {
                     ConsoleWriter.WriteInfo("Importing all log files...");
 
-                    parser.ParseEntries(out count);
+                    parser.ParseEntries(out count, options.RenameFile);
                 } 
                 else
                 {
@@ -54,7 +54,7 @@ namespace LogImporter
                     ConsoleWriter.WriteInfo("{0} files already in database.", importedFileNames.Count());
                     ConsoleWriter.WriteInfo("Importing only new entries...", importedFileNames.Count());
 
-                    parser.ParseEntries(importedFileNames, lastEntry, out count);
+                    parser.ParseEntries(importedFileNames, lastEntry, out count, options.RenameFile);
                 }
 
                 ConsoleWriter.WriteSuccess("Imported {0} log entries.", count);

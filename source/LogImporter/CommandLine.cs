@@ -45,6 +45,11 @@ namespace LogImporter
         /// </summary>
         public bool CreateTable { get; set; }
 
+        /// <summary>
+        /// Rename file
+        /// </summary>
+        public string RenameFile  { get; set; }
+
         public void PrintUsage(TextWriter writer)
         {
             if (writer == null)
@@ -137,6 +142,11 @@ namespace LogImporter
                     "n",
                     "Create the table if it does not alread exists",
                     (string b) => this.CreateTable = b != null)
+
+                .Add(
+                    "r=",
+                    "Rename files with the extention",
+                    (string s) => this.RenameFile = StripQuotes(s))
 
                 .Add(
                     "f|force",
