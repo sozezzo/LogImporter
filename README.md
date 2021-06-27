@@ -30,10 +30,16 @@ Furthermore the following optional parameters are available:
     -p=VALUE             Pattern for log files
     -n                   Create the table if it does not exist already
     -f, --force          Force full import of all files
+    -r=Extension         Rename extension file name
 
 Example usage:
 
-    LogImporter.exe -d "D:\logs\W3SVC8" -t w3c_testlog -n -c "Data Source=.\SQLEXPRESS;Initial Catalog=logimporter_test;Integrated Security=True" -p "*.log"
+    LogImporter.exe -d "D:\logs\W3SVC8" -t w3c_testlog -n -c "Data Source=.\SQLEXPRESS;Initial Catalog=logimporter_test;Integrated Security=True;Connection Timeout=30" -p "*.log" -r "bak"      
+    
+** Add more time at Connection Timeout if there are errors when start.
+
+** Or add index on the table
+      Timestamp DESC 
 
 ## Build
 
