@@ -65,7 +65,7 @@ namespace LogImporter
             if (lastEntry == null)
                 return (entry) => true;
 
-            return (entry) => 
+            return (entry) =>
                 entry.LogFilename != lastEntry.LogFilename || entry.LogRow > lastEntry.LogRow;
         }
 
@@ -85,10 +85,17 @@ namespace LogImporter
                 // Read entries from file and apply transformations.
                 var entries = this.ParseEntries(file, this.transformations).Where(AllowInsert(lastEntry));
 
-                // Write entries to the database.
-                this.db.Write(entries, out subCount);
+                try
+                {
+                    // Write entries to the database.
+                    this.db.Write(entries, out subCount);
+                    file.MoveTo(file.FullName + ".bak");
+                    subCounts.Add(file.FullName, subCount);
+                }
+                catch
+                {
+                }
 
-                subCounts.Add(file.FullName, subCount);
             });
 
             // Set count to sum of all entry counts per file.

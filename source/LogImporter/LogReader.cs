@@ -21,6 +21,7 @@ namespace LogImporter
         {
             int row = 0;
             IDictionary<int, string> fields = this.adapter.DefaultFieldConfiguration ?? new Dictionary<int, string>();
+            ConsoleWriter.WriteInfo("Loading file : {0}", file.FullName);
 
             // Open file stream
             FileStream stream = file.OpenRead();
